@@ -75,12 +75,26 @@ namespace Breakfast.Controllers
         [HttpPut("{id:guid}")]
         public IActionResult UpdateBreakfast(Guid id, UpdateBreakfastRequest request)
         {
-            return Ok(request);
+            var breakfast = new BreakfastModel(
+                id,
+                request.Name,
+                request.Description,
+                request.StartDateTime,
+                request.EndDateTime,
+                DateTime.UtcNow,
+                request.Savory,
+                request.Sweet
+            );
+
+            _breakfastService.UpdateBreakfast(breakfast);
+
+            return NoContent();
         }
 
         [HttpDelete("{id:guid}")]
         public IActionResult DeleteBreakfast(Guid id)
         {
+            _breakfastService.DeleteBreakfast(id);
             return Ok(id);
         }
     }

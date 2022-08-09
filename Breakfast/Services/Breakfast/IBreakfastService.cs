@@ -11,5 +11,7 @@ namespace Breakfast.Services.Breakfast
     {
         void CreateBreakfast(BreakfastModel breakfast);
         BreakfastModel GetBreakfast(Guid id);
+        void UpdateBreakfast(BreakfastModel breakfast);
+        void DeleteBreakfast(Guid id);
     }
 }
