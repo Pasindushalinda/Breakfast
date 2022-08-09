@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Breakfast.Contracts.Breakfast;
 using Breakfast.Models;
+using Breakfast.Services.Breakfast;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Breakfast.Controllers
@@ -12,6 +13,12 @@ namespace Breakfast.Controllers
     [Route("[controller]")]
     public class BreakfastController : ControllerBase
     {
+        private readonly IBreakfastService _breakfastService;
+
+        public BreakfastController(IBreakfastService breakfastService)
+        {
+            _breakfastService = breakfastService;
+        }
         [HttpPost("")]
         public IActionResult CreateBreakfast(CreateBreakfastRequest request)
         {
@@ -26,6 +33,8 @@ namespace Breakfast.Controllers
                 request.Sweet
             );
 
+            _breakfastService.CreateBreakfast(breakfast);
+
             var response = new BreakfastResponse(
                 breakfast.Id,
                 breakfast.Name,
@@ -39,7 +48,7 @@ namespace Breakfast.Controllers
 
             return CreatedAtAction(
                 nameof(GetBreakfast),
-                new { id = breakfast.Id},
+                new { id = breakfast.Id },
                 response
             );
         }
@@ -47,7 +56,20 @@ namespace Breakfast.Controllers
         [HttpGet("{id:guid}")]
         public IActionResult GetBreakfast(Guid id)
         {
-            return Ok(id);
+            var breakfast = _breakfastService.GetBreakfast(id);
+
+            var response = new BreakfastResponse(
+                breakfast.Id,
+                breakfast.Name,
+                breakfast.Description,
+                breakfast.StartDateTime,
+                breakfast.EndDateTime,
+                breakfast.LastModifiedDateTime,
+                breakfast.Savory,
+                breakfast.Sweet
+            );
+
+            return Ok(response);
         }
 
         [HttpPut("{id:guid}")]
