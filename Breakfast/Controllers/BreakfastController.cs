@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Breakfast.Contracts.Breakfast;
+using Breakfast.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Breakfast.Controllers
@@ -14,7 +15,33 @@ namespace Breakfast.Controllers
         [HttpPost("")]
         public IActionResult CreateBreakfast(CreateBreakfastRequest request)
         {
-            return Ok(request);
+            var breakfast = new BreakfastModel(
+                Guid.NewGuid(),
+                request.Name,
+                request.Description,
+                request.StartDateTime,
+                request.EndDateTime,
+                DateTime.UtcNow,
+                request.Savory,
+                request.Sweet
+            );
+
+            var response = new BreakfastResponse(
+                breakfast.Id,
+                breakfast.Name,
+                breakfast.Description,
+                breakfast.StartDateTime,
+                breakfast.EndDateTime,
+                breakfast.LastModifiedDateTime,
+                breakfast.Savory,
+                breakfast.Sweet
+            );
+
+            return CreatedAtAction(
+                nameof(GetBreakfast),
+                new { id = breakfast.Id},
+                response
+            );
         }
 
         [HttpGet("{id:guid}")]

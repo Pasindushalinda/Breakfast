@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Breakfast.Models
 {
-    public class Breakfast
+    public class BreakfastModel
     {
-        public Guid id { get; }
+        public Guid Id { get; }
         public string Name { get; }
         public string Description { get; }
         public DateTime StartDateTime { get; }
@@ -16,7 +16,7 @@ namespace Breakfast.Models
         public List<string> Savory { get; }
         public List<string> Sweet { get; }
 
-        public Breakfast(
+        public BreakfastModel(
             Guid id,
             string name,
             string description,
@@ -26,7 +26,7 @@ namespace Breakfast.Models
             List<string> savory,
             List<string> sweet)
         {
-            this.id = id;
+            Id = id;
             Name = name;
             Description = description;
             StartDateTime = startDateTime;
